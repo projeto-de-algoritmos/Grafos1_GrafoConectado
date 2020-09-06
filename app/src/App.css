@@ -1,0 +1,16 @@
+line:hover {
+  stroke: red;
+}
+line {
+  stroke: #000;
+}
+
+#path1 {
+  fill: red;
+}
+#path2 {
+  stroke: red;
+  stroke-width: 1.25px;
+  fill: none;
+  marker-end: url(#arrow);
+}

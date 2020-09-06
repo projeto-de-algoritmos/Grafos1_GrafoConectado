@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import initGraph from "./utils/createGraph";
-import verifyConnectivity from "./utils/verifyConnectivity"
+import { Stage, Layer, Arrow, Circle, Text } from "react-konva";
 
 import "./App.css";
 
@@ -34,9 +34,9 @@ function App() {
     const styleArray = [];
     for (let i = 0; i < vertex; i++) {
       styleArray.push({
+        top: Math.floor(Math.random() * 800),
+        left: Math.floor(Math.random() * 800),
         position: "absolute",
-        bottom: Math.floor(Math.random() * 500) + 300,
-        left: Math.floor(Math.random() * 500) + 500,
       });
     }
     randomGraphStyle.current = styleArray;
@@ -48,10 +48,10 @@ function App() {
     console.log(vertex1, vertex2);
 
     const vertex1X = vertex1.left;
-    const vertex1Y = vertex1.bottom;
+    const vertex1Y = vertex1.top;
 
     const vertex2X = vertex2.left;
-    const vertex2Y = vertex2.bottom;
+    const vertex2Y = vertex2.top;
 
     const distance = Math.sqrt(
       Math.pow(vertex1X - vertex2X, 2) + Math.pow(vertex1Y - vertex2Y, 2)
@@ -117,43 +117,55 @@ function App() {
       for (let j = 0; j < vertex; j++) {
         if (graph_matrix[i][j] === 1) {
           connectedEdges.push(
-            <svg width={window.screen.height} height={window.screen.width}>
-              <line
-                x1={String(randomGraphStyle.current[i].left)}
-                y1={String(randomGraphStyle.current[i].bottom)}
-                x2={String(randomGraphStyle.current[j].left)}
-                y2={String(randomGraphStyle.current[j].bottom)}
-                stroke="black"
-              />
-            </svg>
+            <Arrow
+              points={[
+                randomGraphStyle.current[i].left,
+                randomGraphStyle.current[i].top,
+                randomGraphStyle.current[j].left,
+                randomGraphStyle.current[j].top,
+              ]}
+              fill="black"
+              stroke="black"
+            />
           );
         }
       }
     }
-    console.log(connectedEdges);
     return connectedEdges;
   };
+  const renderVertex = () => {
+    const vertexes = graph_matrix.map((vertex, i) => (
+      <>
+        <Circle
+          radius={5}
+          x={randomGraphStyle.current[i].left}
+          y={randomGraphStyle.current[i].top}
+          stroke="black"
+          fill="red"
+        />
+        <Text
+          x={randomGraphStyle.current[i].left - 3}
+          y={randomGraphStyle.current[i].top + 10}
+          text={i}
+          fontSize={20}
+          fontStyle="bold"
+        />
+      </>
+    ));
 
+    return vertexes;
+  };
   const renderGraph = () => (
-    <div>
-      {graph_matrix.map((vertex, i) => (
-        <div style={randomGraphStyle.current[i]}>
-          <p>{i}</p>
-          <div
-            style={{
-              width: 10,
-              height: 10,
-              backgroundColor: "#000",
-              borderRadius: 10,
-            }}
-          />
-        </div>
-      ))}
-    </div>
+    <Stage width={900} height={900}>
+      <Layer>
+        {renderEdges()}
+        {renderVertex()}
+      </Layer>
+    </Stage>
   );
   const renderGraphInputs = () => (
-    <div>
-      <h2>{edgesCount}</h2>
+    <div style={{ marginRight: 100 }}>
+      <h3>{`Número restantes de arestas: ${edgesCount}`}</h3>
       {graph_matrix.map((grapth_vertex, i) => (
         <div key={i}>
           <p>Vértice número {i}</p>
@@ -173,40 +185,39 @@ function App() {
     </div>
   );
 
+  const renderGraphInfoForm = () => (
+    <div>
+      <input
+        type="text"
+        placeholder="Numero de vértices"
+        onChange={(e) => {
+          setVertex(e.target.value);
+        }}
+      />
+      <input
+        type="text"
+        placeholder="Numero arestas"
+        onChange={(e) => {
+          setEdges(e.target.value);
+          setEdgesCount(e.target.value);
+        }}
+      />
+
+      <button onClick={createGraph}>Enviar</button>
+    </div>
+  );
+
   return (
     <div>
-      <div>
-        <input
-          type="text"
-          placeholder="Numero de vértices"
-          onChange={(e) => {
-            setVertex(e.target.value);
-          }}
-        />
-        <input
-          type="text"
-          placeholder="Numero arestas"
-          onChange={(e) => {
-            setEdges(e.target.value);
-            setEdgesCount(e.target.value);
-          }}
-        />
-
-        <button type="text" onClick={createGraph}>
-          Enviar
-        </button>
-      </div>
-
+      {!graph_matrix && renderGraphInfoForm()}
       {graph_matrix && (
         <div
           style={{
             display: "flex",
             flexDirection: "row",
-            justifyContent: "space-between",
           }}
         >
           {renderGraphInputs()}
-          {renderEdges()}
           {renderGraph()}
         </div>
       )}
