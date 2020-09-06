@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import initGraph from "./utils/createGraph";
+import verifyConnectivity from "./utils/verifyConnectivity"
 
 import "./App.css";
 
