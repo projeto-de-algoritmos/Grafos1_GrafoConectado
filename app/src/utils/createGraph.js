@@ -8,3 +8,5 @@ function initGraph(vertex) {
   }
   return inititalMatrix;
 }
+
+export default initGraph;
