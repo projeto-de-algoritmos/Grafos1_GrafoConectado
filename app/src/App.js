@@ -238,14 +238,31 @@ function App() {
   };
   const renderGraph = () => (
     <div className="graph-container">
-      {!isFinishedGraph && (
-        <div
-          className="reorderButton"
-          onClick={() => generateGraphStyle(vertex)}
-        >
-          Reordenar grafo
+      {!isFinishedGraph ? (
+        <div className="upperGraphButtons">
+          <div
+            className="reorderButton"
+            onClick={() => generateGraphStyle(vertex)}
+          >
+            Reordenar grafo
+          </div>
+          <div className="reorderButton" onClick={() => finishGraph()}>
+            Testar conectividade
+          </div>
         </div>
+      ) : (
+        <>
+          {renderResultMessage()}
+          {renderShowReverseButton()}
+          <div
+            className="reorderButton"
+            onClick={() => window.location.reload()}
+          >
+            Refazer
+          </div>
+        </>
       )}
+      {}
       <Stage width={900} height={900} className="graphView">
         <Layer>
           {renderEdges(graph_matrix)}
@@ -256,60 +273,69 @@ function App() {
   );
 
   const renderReverseGraph = () => (
-    <>
+    <div className="graph-container">
+      {isFinishedGraph && renderResultMessage()}
+      {renderShowReverseButton()}
+      <div className="reorderButton" onClick={() => window.location.reload()}>
+        Refazer
+      </div>
       <Stage width={900} height={900} className="graphView">
         <Layer>
           {renderEdges(reverse_graph_matrix)}
           {renderVertex(reverse_graph_matrix)}
         </Layer>
       </Stage>
-    </>
+    </div>
   );
   const renderGraphInputs = () => (
     <div className="graphInputContainer">
       <h3>{`Total de arestas: ${edgesCount}`}</h3>
-
-      <div className="graphInputs">
-        <div>
-          <label>Vértice origem</label>
-          <select
-            value={originVertex}
-            onChange={(e) => {
-              setOriginVertex(e.target.value);
-            }}
+      {edgesCount > 0 ? (
+        <div className="graphInputs">
+          <div>
+            <label> Origem</label>
+            <select
+              value={originVertex}
+              onChange={(e) => {
+                setOriginVertex(e.target.value);
+              }}
+            >
+              {graph_matrix.map((graph, i) => (
+                <option value={i} label={i} />
+              ))}
+            </select>
+            <label>Destino</label>
+            <select
+              value={destinyVertex}
+              onChange={(e) => {
+                setDestinyVertex(e.target.value);
+              }}
+            >
+              {graph_matrix.map((graph, i) => (
+                <option value={i} label={i} />
+              ))}
+            </select>
+          </div>
+          <button onClick={() => connectVertex(originVertex, destinyVertex)}>
+            Conectar
+          </button>
+          <button
+            onClick={() =>
+              connectVertexBothDirection(originVertex, destinyVertex)
+            }
           >
-            {graph_matrix.map((graph, i) => (
-              <option value={i} label={i} />
-            ))}
-          </select>
-          <label>Vértice destino</label>
-          <select
-            value={destinyVertex}
-            onChange={(e) => {
-              setDestinyVertex(e.target.value);
-            }}
-          >
-            {graph_matrix.map((graph, i) => (
-              <option value={i} label={i} />
-            ))}
-          </select>
+            Conexão dupla
+          </button>
+          <button onClick={() => removeConnection(originVertex, destinyVertex)}>
+            Desconectar
+          </button>
         </div>
-        <button onClick={() => connectVertex(originVertex, destinyVertex)}>
-          Conectar
-        </button>
-        <button
-          onClick={() =>
-            connectVertexBothDirection(originVertex, destinyVertex)
-          }
-        >
-          Conexão dupla
-        </button>
-        <button onClick={() => removeConnection(originVertex, destinyVertex)}>
-          Desconectar
-        </button>
-      </div>
-
-      <button onClick={() => finishGraph()}>Testar conectividade</button>
+      ) : (
+        <p>
+          Você utilizou todas suas arestas!
+          <br /> Agora teste a conectividade
+        </p>
+      )}
     </div>
   );
 
@@ -338,9 +364,9 @@ function App() {
   );
 
   const renderShowReverseButton = () => (
-    <button onClick={() => setShowReverse(!showReverse)}>
+    <div className="reorderButton" onClick={() => setShowReverse(!showReverse)}>
       Mostrar inversa
-    </button>
+    </div>
   );
 
   const renderResultMessage = () => <h1>{resultMessage}</h1>;
@@ -367,9 +393,7 @@ function App() {
             justifyContent: "center",
           }}
         >
-          {isFinishedGraph && renderResultMessage()}
           {!isFinishedGraph && renderGraphInputs()}
-          {isFinishedGraph && renderShowReverseButton()}
           {showReverse ? renderReverseGraph() : renderGraph()}
         </div>
       )}
