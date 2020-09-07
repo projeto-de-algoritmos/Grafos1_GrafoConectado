@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import initGraph from "./utils/createGraph";
 import { Stage, Layer, Arrow, Circle, Text } from "react-konva";
+import verifyStrongConnectivity from "./utils/verifyConnectivity";
 
 import "./App.css";
 
@@ -10,9 +11,8 @@ function App() {
   const [edgesCount, setEdgesCount] = useState(0);
   const [graph_matrix, setGraph_matrix] = useState(null);
   const [selectedVertex, setSelectedVertex] = useState(null);
-
+  
   const randomGraphStyle = useRef([]);
-
   function createGraph() {
     if (vertex <= 0) {
       //MENSAGEM NÃO VERTICE NÃO PODE SER MENOR QUE 0
@@ -60,22 +60,22 @@ function App() {
   }
 
   function connectVertex(origin, destination) {
-    calculateVertexDistance(origin, destination);
-    const isAlredyConnected = verifyConnectivity(origin, destination);
 
+    const isAlredyConnected = verifyConnectivity(origin, destination);
     if (isAlredyConnected) {
       console.log("JÁ TÁ CONECTADO!!");
       return;
     }
-
     let newGraph = graph_matrix;
     if (destination < graph_matrix.length) {
       newGraph[origin][destination] = 1;
       setGraph_matrix(newGraph);
       setEdgesCount(edgesCount - 1);
+      calculateVertexDistance(origin, destination);
     } else {
       console.log("POSIÇÃO NÃO EXISTENTE");
     }
+    
   }
 
   function connectVertexBothDirection(origin, destination) {
@@ -104,12 +104,45 @@ function App() {
     }
   }
 
+  function removeConnection(origin, destination){
+    let newGraph = graph_matrix;
+    let aux = edgesCount;
+    const isAlredyConnected = verifyConnectivity(origin, destination);
+    if (!isAlredyConnected) {
+      console.log("NÃO TÁ CONECTADO!!");
+      return;
+    }
+    if (destination < graph_matrix.length) {
+      newGraph[origin][destination] = 999;
+      setGraph_matrix(newGraph);
+      aux++;
+      setEdgesCount(aux);
+      calculateVertexDistance(origin, destination);
+    } else {
+      console.log("POSIÇÃO NÃO EXISTENTE");
+    }
+  }
+
   function verifyConnectivity(origin, destination) {
     if (graph_matrix[origin][destination] === 1) {
       return true;
     }
     return false;
   }
+
+  function finishGraph(){
+    let aux = edges;
+    let graph = graph_matrix;
+    aux++;
+    let isConnected = verifyStrongConnectivity(graph, aux);
+    if(isConnected){
+      console.log("Este Grafo é fortemente conectado!")
+    } else {
+      console.log("Este Grafo não é fortemente conectado");
+    }
+    return;
+  }
+
   const renderEdges = () => {
     const connectedEdges = [];
 
@@ -164,8 +197,12 @@ function App() {
     </Stage>
   );
   const renderGraphInputs = () => (
+    
     <div style={{ marginRight: 100 }}>
       <h3>{`Número restantes de arestas: ${edgesCount}`}</h3>
+      <button onClick={() => finishGraph()}>
+        Finalizar Grafo
+      </button>
       {graph_matrix.map((grapth_vertex, i) => (
         <div key={i}>
           <p>Vértice número {i}</p>
@@ -178,6 +215,9 @@ function App() {
               onClick={() => connectVertexBothDirection(i, selectedVertex)}
             >
               Conexão dupla
+            </button>
+            <button onClick={() => removeConnection(i, selectedVertex)}>
+              Desconectar
             </button>
           </div>
         </div>

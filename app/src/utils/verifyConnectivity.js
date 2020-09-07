@@ -1,4 +1,4 @@
-function verifyConnectivity(graph, v) {
+function verifyStrongConnectivity(graph, v) {
     //Floyd-Warshall
     return floydWarshall(graph, v);
     //BFS
@@ -6,7 +6,7 @@ function verifyConnectivity(graph, v) {
 }
 
 function floydWarshall(graph, v){
-    let i, j, k, INF = 999;
+    let i, j, k;
     for(k = 0; k < v; k++){
         for(i = 0; i < v; i++){
             for(j = 0; j < v; j++) {
@@ -16,11 +16,11 @@ function floydWarshall(graph, v){
             }
         }
     }
-    for (i = 1; i < v; i++)  
+    for (i = 0; i < v; i++)  
     {  
-        for (j = 1; j < v; j++)  
-        {  
-            if (graph[i][j] === INF){ 
+        for (j = 0; j < v; j++)  
+        { 
+            if (graph[i][j] === 999){ 
                 return false;
             }
         }    
@@ -49,4 +49,4 @@ function BFS (graph) {
     return bfsTree;
 }
 
-export default verifyConnectivity;
+export default verifyStrongConnectivity;
