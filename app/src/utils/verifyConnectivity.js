@@ -1,12 +1,31 @@
-function verifyStrongConnectivity(graph, v) {
+function verifyStrongConnectivity(graph, v, isFW) {
   //Floyd-Warshall
-  //   return floydWarshall(graph, v);
+  if (isFW) return floydWarshall(graph, v);
   //BFS
-  return BFS(graph);
+  let isStrongConnected = true;
+  const graphReverse = revertGraph(graph);
+
+  const graphBFS = BFS(graph, 0, v);
+  const graphReverseBFS = BFS(graphReverse, 0, v);
+
+  if (graphBFS.length !== graphReverseBFS.length || graphBFS.length !== v - 1) {
+    isStrongConnected = false;
+  }
+  return { isStrongConnected, graphBFS, graphReverseBFS, graphReverse };
 }
 
+const revertGraph = (graph) => {
+  let reverse = [];
+  for (let i = 0; i < graph.length; i++) {
+    reverse.push([]);
+    for (let j = 0; j < graph.length; j++) {
+      reverse[i].push(graph[j][i]);
+    }
+  }
+  return reverse;
+};
+
 function floydWarshall(graph, v) {
-  console.log(graph[0][0], v);
   let i, j, k;
   for (k = 0; k < v; k++) {
     for (i = 0; i < v; i++) {
@@ -27,24 +46,25 @@ function floydWarshall(graph, v) {
   return true;
 }
 
-function BFS(graph) {
+function BFS(graph, i, v) {
   let queue = [];
   let visited = [];
   let bfsTree = [];
-  graph.forEach((vertex, i) => {
-    queue.push(vertex);
-    visited[i] = 1;
+  let u;
+  for (let j = i; j < v; j++) {
+    queue.push(graph[j]);
+    visited[j] = 1;
     while (queue.length) {
-      queue.pop();
-      vertex.forEach((v, i) => {
-        if (visited[i] !== 1) {
-          visited[i] = 1;
-          queue.push(v);
-          bfsTree.push(v);
+      u = queue.pop();
+      u.forEach((vertex, k) => {
+        if (vertex === 1 && visited[k] !== 1) {
+          visited[k] = 1;
+          queue.push(graph[k]);
+          bfsTree.push(k);
         }
       });
     }
-  });
+  }
   return bfsTree;
 }
 
