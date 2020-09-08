@@ -22,9 +22,13 @@ function App() {
   const [randomGraphStyle, setRandomStyle] = useState([]);
 
   function createGraph() {
-    if (vertex <= 0) {
+    if (vertex <= 0 || vertex > 1000 || isNaN(vertex)) {
       //MENSAGEM NÃO VERTICE NÃO PODE SER MENOR QUE 0
-      alert("Número de vétices inválido!");
+      alert("Número de vértices inválido ou muito grande!(máx 1000)");
+      return;
+    }
+    if (edges <= 0 || edges > 1000 || isNaN(edges)) {
+      alert("Número de arestas inválido ou muito grande!(máx 1000)");
       return;
     }
     if (edges > vertex * (vertex - 1) && edges > 0) {
