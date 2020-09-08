@@ -1,5 +1,9 @@
 
-# Grafo Conectado
+  
+
+# [Grafo Conectado](https://conectividadegrafo.netlify.app/)
+
+  
 
   
 
@@ -9,13 +13,19 @@
 
   
 
+  
+
 **Conteúdo da Disciplina**: Grafos 1<br>
 
   
 
   
 
+  
+
 ## Alunos
+
+  
 
   
 
@@ -28,11 +38,21 @@
 
   
 
+  
+
 ## Sobre
 
   
 
+  
+
 Grafo Conectado tem como objetivo ser uma ferramente de construção para grafos direcionados, informando ao usuário se seu grafo é fortemente conectado ou não.
+
+  
+
+O projeto está disponível em: https://conectividadegrafo.netlify.app/
+
+  
 
   
 
@@ -42,12 +62,21 @@ Grafo Conectado tem como objetivo ser uma ferramente de construção para grafos
 
   
 
+  
+
 ![1](https://i.imgur.com/Ja7zfNT.jpg)
+
 ![2](https://i.imgur.com/dCjiZBP.jpeg)
- ![3](https://i.imgur.com/w4wBni6.jpg)
- ![4](https://i.imgur.com/g69pJNO.jpg)
+
+![3](https://i.imgur.com/w4wBni6.jpg)
+
+![4](https://i.imgur.com/g69pJNO.jpg)
+
+  
 
 ## Instalação
+
+  
 
   
 
@@ -55,7 +84,11 @@ Grafo Conectado tem como objetivo ser uma ferramente de construção para grafos
 
   
 
+  
+
 **Framework**: ReactJs<br>
+
+  
 
   
 
@@ -63,9 +96,15 @@ Grafo Conectado tem como objetivo ser uma ferramente de construção para grafos
 
   
 
+  
+
 #### Passos para instalação
 
+  
+
 - 1 -> git clone no repositório ```https://github.com/projeto-de-algoritmos/Grafos1_GrafoConectado.git```
+
+  
 
   
 
@@ -73,7 +112,11 @@ Grafo Conectado tem como objetivo ser uma ferramente de construção para grafos
 
   
 
+  
+
 - 3 -> Executar o comando ```yarn install```
+
+  
 
   
 
@@ -81,9 +124,15 @@ Grafo Conectado tem como objetivo ser uma ferramente de construção para grafos
 
   
 
+  
+
 #### Passos para executar o projeto localmente
 
+  
+
 - 1 -> Acessar a pasta app/
+
+  
 
   
 
@@ -91,12 +140,20 @@ Grafo Conectado tem como objetivo ser uma ferramente de construção para grafos
 
   
 
+  
+
 - 3 -> O projeto estará em execução no endereço ```localhost:3000```
+
+  
 
   
 
 ## Outros
 
+  
+
 Para calcular a conectividade do grafo, utilizamos a busca BFS com o auxílio de uma matriz inversa.
+
+  
 
 O ponto inicial para a busca BFS é sempre o vértice de número 0. As cores das arestas e dos vértices mudarão de acordo com a conectividade em relação ao vértice 0, verde representa nós alcançáveis e arestas utilizadas enquanto vermelho representa os nós não alcançáveis e arestas não utilizadas.
