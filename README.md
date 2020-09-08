@@ -20,11 +20,8 @@
   
 
 |Matrícula | Aluno |
-
 | -- | -- |
-
 | 17/0010341 | Gabriel Davi Silva Pereira |
-
 | 17/0102343 | Eduardo Vieira Lima |
 
   
@@ -43,10 +40,12 @@ Grafo Conectado tem como objetivo ser uma ferramente de construção para grafos
 
 ## Screenshots
 
-![1](https://imgur.com/a/t0tYpls)
-![2](https://imgur.com/a/2q74czQ)
-![3](https://imgur.com/a/fht0zhq)
-![4](https://imgur.com/a/cFxHf0W)
+  
+
+![1](https://i.imgur.com/Ja7zfNT.jpg)
+![2](https://i.imgur.com/dCjiZBP.jpeg)
+ ![3](https://i.imgur.com/w4wBni6.jpg)
+ ![4](https://i.imgur.com/g69pJNO.jpg)
 
 ## Instalação
 
